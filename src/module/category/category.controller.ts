@@ -30,12 +30,30 @@ export class CategoryController {
   findAll() {
     return this.categoryService.findAll();
   }
+  @Get(':id')
+  findById(@Param('id') id :string) {
+    return this.categoryService.findById(+id);
+  }
 
   
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(+id, updateCategoryDto);
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(UploadFileS3("image"))
+  update(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators : [
+          new MaxFileSizeValidator({maxSize : toMG(10)}),
+          new FileTypeValidator({fileType : "image/(png|jpg|jpeg)"})
+        ],
+        fileIsRequired : false
+      })
+    ) image : Express.Multer.File,
+    @Param('id') id: string,
+    @Body() updateCategoryDto: UpdateCategoryDto
+  ) {
+    return this.categoryService.update(+id, updateCategoryDto, image);
   }
 
   @Delete(':id')
@@ -43,3 +61,5 @@ export class CategoryController {
     return this.categoryService.remove(+id);
   }
 }
+
+

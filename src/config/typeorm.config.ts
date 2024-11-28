@@ -16,11 +16,10 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory{
         synchronize : false,
         // autoLoadEntities : true,
         // entities: [ 
-        //     "clinic/dist/**/**/**/*.entity.{ts, js}",
-        //     "clinic/dist/**/**/*.entity.{ts, js}",
+        //     "dist/**/**/**/*.entity.{ts,js}",
+        //     "dist/**/**/*.entity.{ts,js}",
         //   ], 
         entities : [DoctorEntity, OtpEntity, UserEntity, CategoryEntity],
-        dropSchema : false 
          
         }  
     }   

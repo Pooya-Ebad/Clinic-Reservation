@@ -1,5 +1,4 @@
-import { EntityName } from "src/common/enums/entities.enum";
-import { DoctorEntity } from "src/module/doctors/entities/doctor.entity";
+import { EntityName } from "src/common/enums/entities.enum"; 
 import { UserEntity } from "src/module/users/entities/user.entity";
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 

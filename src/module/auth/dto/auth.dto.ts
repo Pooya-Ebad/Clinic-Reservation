@@ -1,14 +1,20 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsMobilePhone, IsString, Length } from "class-validator";
+import { IsJWT, IsMobilePhone, IsString, Length, Matches } from "class-validator";
 import { role } from "src/common/enums/role.enum";
 
-export class SendOtpDto {
+export class CreateOtpDto {
     @ApiProperty()
     @IsString()
+    // @Matches()
     first_name : string
     @ApiProperty()
     @IsString()
     last_name : string
+    @ApiProperty()
+    @IsMobilePhone ("fa-IR", {}, {message : "phone number is incorrect"})
+    mobile : string
+}
+export class SendOtpDto {
     @ApiProperty()
     @IsMobilePhone ("fa-IR", {}, {message : "phone number is incorrect"})
     mobile : string
@@ -29,4 +35,9 @@ export class RoleDto {
     @ApiProperty({enum : role})
     @IsString()
     role : string
+}
+export class RefreshTokenDto {
+    @ApiProperty()
+    @IsJWT({message : "token incorrect"})
+    RefreshToken : string
 }

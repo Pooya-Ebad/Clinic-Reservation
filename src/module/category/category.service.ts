@@ -58,11 +58,37 @@ export class CategoryService {
     return category
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: number, updateCategoryDto: UpdateCategoryDto, image : Express.Multer.File = null) {
+    let { description, parentId, show, slug, title } = updateCategoryDto
+    let destination : string;
+    const updateData: any = {};
+
+    await this.findById(id)
+    if(image){
+      const { Location }= await this.s3service.uploadFile(image, "image")
+      destination = Location
+    }
+    if(isBoolean(show)){
+      show = toBoolean(show)
+      updateData.show = show
+    }
+    if(parentId && !isNaN(parentId)){
+      await this.findById(+parentId)
+      updateData.parentId = parentId
+    }
+    if (description) updateData.description = description;
+    if (destination) updateData.image = destination;
+    if (slug) updateData.slug = slug;
+    if (title) updateData.title = title;
+    await this.categoryRepository.update({id},{
+      ...updateData
+    })
+    return {message : "category updated"}
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: number) {
+    await this.findById(id)
+    await this.categoryRepository.delete({id})
+    return `category number ${id} deleted successfully`
   }
 }

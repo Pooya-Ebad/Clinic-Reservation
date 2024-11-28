@@ -1,9 +1,8 @@
-import { TokenPayload } from "../types/payload";
+import 'express';
+import { TokenPayload } from '../types/payload';
 
-declare global {
-    namespace Express {
-        interface Request {
-           user : TokenPayload
-       }
-    }
+declare module 'express' {
+  export interface Request {
+    user?: TokenPayload
+  }
 }
