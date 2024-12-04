@@ -21,10 +21,8 @@ export class AuthGuard implements CanActivate{
         const requiredRole : string[] = this.reflector.get(ROLE_KEY, context.getHandler());
         if(requiredRole && requiredRole.length>0){
             const userRole = await this.authService.checkUserRole(request.user.mobile)
-            for(let i = requiredRole.length; i>0; i--){
-                if(userRole === requiredRole[i-1]){
+            if(requiredRole.includes(userRole.toString())){
                     return true
-                }
             }
                 throw new UnauthorizedException("access denied")
         }
